@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %} 
+{# https://we.tl/t-19Wl1EfuCE #}
+{% block title %}{{ parent() }} | Catalogue{% endblock %}
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/catalogue.css') }}">
+{% endblock %}
+
+
+{% block h1 %}Catalogue{% endblock %}
+
+{% block body %}
+
+    {# ife tabul pour avoir if else et endif #}
+
+    {% if produits is not empty %} {# {% if produits %}si produits n'est pas vide #}
+
+        {# ici il y a aura les cards des produits #}
+
+
+
+        <div class="row justify-content-around">
+
+
+            <div class="col-md-8 alert alert-primary ">
+                <form action="{{ path('catalogue') }}" method="post">
+                    <div class="row">
+                        <div class="col-md-6 mt-5">
+                            <div class="form-group">
+                                <label class="form-label mt-4" for="categorie">Filtrer par catégorie</label>
+                                <select class="form-select" name="categorie" id="categorie">
+                                    <option value="all">Catégorie</option>
+                                {% for categorie in categories %}
+                                        <option value="{{ categorie.id }}">{{ categorie.name }}</option>
+                                    {% endfor %}
+                                </select>
+
+
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label mt-4" for="matiere">Filtrer par matiere</label>
+                                <select class="form-select" name="matiere" id="matiere">
+                                    <option value="all">Matières</option>
+                                    {% for matiere in matieres %}
+                                        <option value="{{ matiere.id }}">{{ matiere.name }}</option>
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2 pb-3">
+                            <div class="pt-4">
+                                <label for="">Votre budget</label>
+                                <div class="range-wrap mt-4 ms-3 ">
+                                    <div class="range-value" id="rangeV"></div>
+                                    <input id="range" name="prixmax" type="range" min="50" max="1500" value="1500"
+                                           step="50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                </form>
+
+            </div>
+
+            {% for produit in produits %}
+                <div class="col-md-3 m-2 mt-4 p-2 text-center" style='box-shadow: 2px 2px 4px grey'>
+                
+                    <h4>{{ produit.titre|capitalize }}</h4>
+                    
+                    {% if produit.image is not empty %}
+                        <img src="{{ asset('images/imagesUpload/' ~ produit.image ) }}" style="width:150px" alt="">
+                    {% else %}
+                        <img src="{{ asset('images/imageDefault.jpg') }}" style="width:150px" alt=""> 
+                    {% endif %}
+
+                    <div>{{ produit.prix }} €</div>
+
+                    <a class="btn btn-warning col-md-12" href="{{ path('fiche_produit'  ,   {"id" : produit.id }     ) }}">Voir la fiche produit</a>
+                    <a class="btn btn-secondary col-md-12" href="{{ path('addCart', {id:produit.id, param:'catalogue'}) }}">Ajouter au panier</a>
+                </div>
+            {% endfor %}
+        </div>
+
+
+
+    {% else %}{# si produits est vide #}
+
+        <h4 class="text-center text-danger fst-italic mt-3">Il n'y a pas de produits pour le moment</h4>
+
+    {% endif %}
+
+    <script>
+        const
+            range = document.getElementById('range'),
+            rangeV = document.getElementById('rangeV'),
+            setValue = () => {
+                const
+                    newValue = Number((range.value - range.min) * 100 / (range.max - range.min)),
+                    newPosition = 10 - (newValue * 0.2);
+                rangeV.innerHTML = `<span>${range.value}</span>`;
+                rangeV.style.left = `calc(${newValue}% + (${newPosition}px))`;
+
+            };
+        document.addEventListener("DOMContentLoaded", setValue);
+        range.addEventListener('input', setValue);
+
+    </script>
+
+
+
+{% endblock %}
+

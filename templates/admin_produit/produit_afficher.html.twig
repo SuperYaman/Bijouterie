@@ -1,0 +1,123 @@
+{% extends 'panelAdmin.html.twig' %}
+
+{% block title %}{{ parent() }} | Back Office | Gestion des produits{% endblock %}
+
+
+
+
+{% block h1 %}Gestion des produits{% endblock %}
+
+{% block body %}
+
+    {# Notification #}
+    {# app est une variable d'environnement #}
+    {% for notification in app.flashes('success') %}
+        <div class="alert alert-success col-md-6 mx-auto text-center">{{ notification }}</div>
+    {% endfor %}
+
+
+    <div class="row justify-content-end">
+        <a class="btn btn-success col-md-2" href="{{ path('produit_ajouter') }}">Ajouter un produit</a>
+    </div>
+
+    {% if produits is not empty %} {# si produits n'est pas vide #}
+
+       <table class="table table-hover table-striped text-center mt-3">
+
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Prix (€)</th>
+                    <th>Image</th>
+                    <th>Date</th>
+                    <th>Catégorie</th>
+                    <th>Matières</th>
+                    <th>Modifier</th>
+                    <th>Supprimer</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+
+                {% for produit in produits %}
+                {# produits c'est le tableau qu'on récupère du controller 
+                Il contient tous les produits (objets) de la table Produit 
+                On va boucler chaque objet
+                pour appeler une propriété de l'objet la syntaxe est 
+                objet.propriété
+                #}
+                    
+                    <tr class="align-middle">
+
+                        <td>{{ produit.id }}</td>
+
+                        <td>{{ produit.titre }}</td>
+
+                        <td>{{ produit.prix }}</td>
+
+                        <td>
+                            {% if produit.image is not empty %}
+                                {# pour afficher une image upload, on doit définir dans l'attribut src="" son emplacement et le nom du fichier
+                                    On sait qu'il se trouve dans le dossier public ===> fonction asset()
+                                    à l'intérieur, dans le dossier images
+                                    puis dans le dossier imagesUpload
+                                    jusqu'ici c'est une chaîne de caractères (quote)
+                                    le nom du fichier, on le retrouve dans notre objet produit (id/titre/prix/image)
+                                    ==> produit.image (20210723......bague.jpg)
+                                    la concaténation en twig est le tilde ~ (mac : alt n  // windows : alt gr 2)
+                                 #}
+
+                                <img src="{{ asset('images/imagesUpload/' ~ produit.image ) }}" style="width:80px" alt="">  
+
+                                {#<img src="{{ asset("images/imagesUpload/#{produit.image}" ) }}" style="width:80px" alt="">#}
+                            {% else %}
+                                <img src="{{ asset('images/imageDefault.jpg') }}" style="width:80px" alt=""> 
+                            {% endif %}
+
+                        </td>
+
+                        <td>{{ produit.dateAt|date("d/m/Y à H:i:s") }}</td> {# /!\ Une date n'est pas une string #}
+
+                        <td>{{ produit.category.name }}</td>
+                        <td>{% for matiere in produit.matieres %}
+                            -{{ matiere.name }}<br>
+                            {% endfor %}</td>
+                        <td>
+                            <a href="{{ path("produit_modifier", {"id":produit.id} ) }}">
+                                <img src="{{ asset('images/update.png') }}" alt=""> 
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="{{ path("produit_supprimer", {"id":produit.id} ) }}" onclick="return confirm('Confirmez-vous la suppression du produit?')">
+                                <img src="{{ asset('images/delete.png') }}" alt="">
+                            </a>
+                        </td>
+                    
+                    
+                    
+                    
+                    </tr>
+
+
+                {% endfor %}
+            
+            
+            </tbody>
+       
+       
+       </table>
+
+
+    {% else %}{# si produits est vide #}
+
+        <h4 class="text-center text-danger fst-italic mt-3">Il n'y a pas de produits pour le moment</h4>
+
+    {% endif %}
+
+
+       
+{% endblock %}
+

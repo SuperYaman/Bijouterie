@@ -1,0 +1,91 @@
+{% extends 'panelAdmin.html.twig' %}
+
+{% block title %}{{ parent() }} | Back Office | Modifier le produit {{ produit.titre }} {% endblock %}
+
+
+
+{% block h1 %}Modifier le produit {{ produit.titre }} {% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('css/select2.css') }}">
+
+    <div class="row justify-content-end">
+        <a class="btn btn-info col-md-2" href="{{ path('produit_afficher') }}">Retour</a>
+    </div>
+
+
+
+    <div class="col-md-6 mx-auto">
+        {{ form_start(formProduit) }} {# la fonction form_start permet de commencer le formulaire: <form> #}
+
+
+            
+            <div class="row">
+
+                {{ form_label(formProduit.prix) }}
+
+                <div class="col-md-6">
+
+                    {{ form_widget(formProduit.prix) }}
+
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_errors(formProduit.prix) }}
+                </div>
+
+            </div>
+
+            {#
+                form_row : tout
+                form_widget : input
+                form_error : message
+                form_label : label
+            
+            #}
+            
+
+            {{ form_row(formProduit.titre, {
+                "attr" : {
+                    "placeholder" : "saisir le titre"
+                    } 
+                }) 
+            }}
+        {{ form_row(formProduit.matieres) }}
+        {{ form_row(formProduit.category) }}
+            {#
+                php :   ["key" => "value"]
+                twig:   {"key" : "value"}
+            #}
+            {{ form_row(formProduit.imageFile, {
+                "attr" : {
+                    "onChange" : "loadFile(event)"
+                    } 
+                }) 
+            }}
+
+            <div class="row justify-content-center">
+            
+                <img id="image" style='width:300px'>
+            
+            </div>
+
+
+
+            <input type="submit" value="Ajouter" class="btn btn-dark text-white col-md-12 mt-3">
+
+        {{ form_end(formProduit) }} {# la fonction form_end permet de terminer le formulaire: </form> #}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script>
+        $(function(){
+            $('.select2').select2()
+
+        })
+    </script>
+    
+{% endblock %}
+

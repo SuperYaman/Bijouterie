@@ -1,0 +1,18 @@
+h1{
+    text-decoration: underline;
+}
+
+
+.inputExemple{
+    background-color: aqua;
+}
+
+.form-error-message{
+    color:blue;
+    font-style: italic;
+    font-size: 1.2em;
+}
+
+.form-error-icon{
+    display: none;
+}

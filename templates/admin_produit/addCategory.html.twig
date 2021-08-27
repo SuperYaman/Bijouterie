@@ -1,0 +1,88 @@
+{% extends 'panelAdmin.html.twig' %}
+
+{% block title %}
+    {{ parent() }}Ajout Catégorie
+{% endblock %}
+{% block h1 %}
+    Ajout Catégorie
+{% endblock %}
+
+
+{% block body %}
+
+    <div class="row justify-content-center mb-5">
+
+        {# Notification #}
+        {# app est une variable d'environnement #}
+        {% for notification in app.flashes('success') %}
+            <div class="alert alert-success col-md-6 mx-auto text-center">{{ notification }}</div>
+        {% endfor %}
+        <div class="col-md-6 ">
+
+
+            {{ form_start(formu) }}
+            <div class="mt-2">
+                <label for="">Nom</label>
+                {{ form_row(formu.name) }}
+            </div>
+            <div class="mt-4">
+                {{ form_row(formu.Valider) }}
+            </div>
+
+            {{ form_end(formu) }}
+        </div>
+
+        {% if categories is not empty %} {# si produits n'est pas vide #}
+
+            <table class="table table-hover table-striped text-center mt-3">
+
+                <thead class="bg-dark text-white">
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Modifier</th>
+                    <th>Supprimer</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+                {% for categorie in categories %}
+
+
+                    <tr class="align-middle">
+
+                        <td>{{ categorie.id }}</td>
+
+                        <td>{{ categorie.name }}</td>
+
+                        <td>  <a href="{{ path("modifCategory", {"id":categorie.id} ) }}">
+                                <img src="{{ asset('images/update.png') }}" alt="">
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="{{ path("deleteCategory", {"id":categorie.id} ) }}" onclick="return confirm('Confirmez-vous la suppression de la catégorie?')">
+                                <img src="{{ asset('images/delete.png') }}" alt="">
+                            </a>
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        {% else %}{# si produits est vide #}
+
+            <h4 class="text-center text-danger fst-italic mt-3">Il n'y a pas de categories pour le moment</h4>
+
+        {% endif %}
+
+    </div>
+{% endblock %}

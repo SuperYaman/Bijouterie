@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %} 
+
+{% block title %}{{ parent() }} | {{ produit.titre|capitalize }}{% endblock %}
+
+
+{% block h1 %}{{ produit.titre|capitalize }}{% endblock %}
+
+{% block body %}
+
+
+    <div class="col-md-6 mx-auto text-center">
+        {% if produit.image is not empty %}
+            <img src="{{ asset('images/imagesUpload/' ~ produit.image ) }}" style="width:300px" alt="">
+        {% else %}
+            <img src="{{ asset('images/imageDefault.jpg') }}" style="width:300px" alt=""> 
+        {% endif %}
+
+        <div>{{ produit.prix }} €</div>
+    </div>
+       
+{% endblock %}
+
+
+
+

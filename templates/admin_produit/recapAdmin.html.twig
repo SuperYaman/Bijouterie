@@ -1,0 +1,55 @@
+{% extends 'panelAdmin.html.twig' %}
+
+{% block title %}
+
+    {{ parent() }}Commandes
+{% endblock %}
+
+
+
+{% block body %}
+
+
+    {% if commandes is not empty %}
+
+
+        {% for commande in commandes %}
+
+            <table class="table table-dark table-striped">
+                <thead>
+                <tr><th colspan="7">Commande N° {{ commande.id }} du {{ commande.date | date('d/m/Y')}} d'un montant total de {{ commande.total }}€ </th></tr>
+                <tr class="text-center">
+                    <th scope="col">#</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Photo</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Quantité</th>
+                    <th scope="col"><button class="btn btn-warning">Action</button></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for lignePanier in commande.achats %}
+                    <tr class="text-center">
+                        <td>{{ lignePanier.produit.id }}</td>
+                        <td>{{ lignePanier.produit.titre }}</td>
+                        <td>{{ lignePanier.produit.prix }}€</td>
+                        <td><img src="{{ asset('images/imagesUpload/') }}{{ lignePanier.produit.image }}" width="50" height="50" alt="{{lignePanier.produit.titre }}"></td>
+                        <td>{{ lignePanier.produit.prix * lignePanier.quantite }}€</td>
+
+                        <td>{{ lignePanier.quantite }}</td>
+
+                        <td><a href="" class="btn btn-warning">Réclamation</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    {% else %}
+        <h3>Aucune commande n'est enregistrée à ce compte</h3>
+    {% endif %}
+{% endblock %}
+
+
+
+

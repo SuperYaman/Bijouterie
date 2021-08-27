@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %} {# héritage du fichier base.html.twig #}
+
+{% block title %}{{ parent() }} | Page{% endblock %}
+{#
+
+la fonction twig parent() permet de récupérer la valeur situé dans le block title de la base.html.twig 
+si la fonction n'est pas appelé, la valeur "bijouterie" sera écrasée par la valeur "page"
+
+#}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/page.css') }}">
+{% endblock %}
+
+{% block h1 %}Titre Page Controller{% endblock %}
+
+{% block body %}
+
+<h2>Bonjour j'ai {{ ageTwig }} ans </h2>
+
+{# Syntaxe alternative ouverture : commande (if/for), fermeture (endif/endfor) #}
+
+    
+    {% if ageTwig >= 18 %}
+        majeur
+    {% else  %}
+        mineur
+    {% endif %}
+
+{% endblock %}
+
+{# commentaire
+
+{{ }} : appel à une variable, ou fonction (path() parent() asset())
+
+
+{% %} : commande (condition, boucle, affectation )
+ if elseif else endif
+ for endfor
+{% set value = 12 %} creation d'une variable
+#}
+
